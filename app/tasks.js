@@ -22,6 +22,16 @@ router.post('/', auth, async (req, res) => {
     }
 });
 
+router.get('/', auth, (req, res) => {
+
+    if (!req.user){
+        res.status(401)
+    }
+
+    TaskSchema.find({user: req.user._id})
+        .then(result => res.send(result))
+        .catch(error => res.send(error));
+});
 
 
 module.exports = router;
