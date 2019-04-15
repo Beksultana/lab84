@@ -12,9 +12,9 @@ router.post('/', async (req, res) => {
 
     try {
         await user.save();
-        return res.send({token: user.token})
+        return res.send({token: user.token});
     } catch (error) {
-        res.status(401).send(error)
+        res.status(401).send(error);
     }
 
 });
@@ -23,17 +23,17 @@ router.post('/session', async (req, res) => {
 
     const user = await UserSchema.findOne({username: req.body.username});
     if (!user){
-        return res.status(401).send({error: 'Username/Password incorrect'})
+        return res.status(401).send({error: 'Username/Password incorrect'});
     }
 
     const isMatch = await bcrypt.compare(req.body.password, user.password);
     if (!isMatch) {
-        return res.status(401).send({error: 'Username/Password incorrect'})
+        return res.status(401).send({error: 'Username/Password incorrect'});
     }
 
     user.generateToken();
     await user.save();
-    return res.send({token: user.token})
+    return res.send({token: user.token});
 });
 
 
