@@ -33,5 +33,14 @@ router.get('/', auth, (req, res) => {
         .catch(error => res.send(error));
 });
 
+router.delete('/:_id', async (req, res) => {
+    const  task = await TaskSchema.findByIdAndDelete(req.params._id);
+    if (!task) {
+        res.status(400).send({error: "Task not found"})
+    }
+
+    res.send({message: "OK"})
+
+});
 
 module.exports = router;
