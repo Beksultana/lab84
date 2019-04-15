@@ -33,8 +33,19 @@ router.get('/', auth, (req, res) => {
         .catch(error => res.send(error));
 });
 
-router.delete('/:_id', async (req, res) => {
-    const  task = await TaskSchema.findByIdAndDelete(req.params._id);
+router.put('/:id', auth, async (req, res) => {
+
+        try {
+            const task = await TaskSchema.updateOne({_id: req.params.id}, {$set : req.body});
+            return res.send(task)
+        } catch (error) {
+            res.status(400).send(error)
+        }
+
+});
+
+router.delete('/:id', async (req, res) => {
+    const  task = await TaskSchema.findByIdAndDelete({_id: req.params.id});
     if (!task) {
         res.status(400).send({error: "Task not found"})
     }
